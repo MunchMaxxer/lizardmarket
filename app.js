@@ -17,13 +17,42 @@ const lizards = [
     name: "Six Lined Racerunner",
     img: "images (23).jpeg",
     prices: { hatchling: 18, baby: 25, juvenile: 32, adult: 45 }
-  }
+  },
+  {
+    id: "bearded",
+    name: "Bearded Dragon",
+    img: "anole2_large.jpg",
+    prices: { hatchling: 45, baby: 75, juvenile: 125, adult: 235 }
+  },
+  {
+    id: "leopard",
+    name: "Leopard Gecko",
+    img: "leopard.png",
+    prices: { hatchling: 12, baby: 35, juvenile: 50, adult: 85 }
+  },
+  {
+    id: "crested",
+    name: "Crested Gecko",
+    img: "crested.png",
+    prices: { hatchling: 45, baby: 105, juvenile: 195, adult: 250 }
+  },
+  {
+    id: "house",
+    name: "House Gecko",
+    img: "house.png",
+    prices: { hatchling: 5, baby: 12, juvenile: 16, adult: 23 }
+  },
+  
 ];
 
 const defaultStock = {
-  anole: { hatchling: 10, baby: 6, juvenile: 4, adult: 2 },
-  texas_spiny: { hatchling: 8, baby: 5, juvenile: 3, adult: 1 },
-  racerunner: { hatchling: 9, baby: 7, juvenile: 3, adult: 2 }
+  anole: { hatchling: 0, baby: 0, juvenile: 0, adult: 0 },
+  texas_spiny: { hatchling: 0, baby: 0, juvenile: 0, adult: 0 },
+  racerunner: { hatchling: 0, baby: 0, juvenile: 0, adult: 0 },
+  bearded: { hatchling: 0, baby: 0, juvenile: 0, adult: 0 },
+  leopard: { hatchling: 0, baby: 0, juvenile: 0, adult: 0 },
+  crested: { hatchling: 0, baby: 0, juvenile: 0, adult: 0 },
+  house: { hatchling: 0, baby: 0, juvenile: 0, adult: 0 }
 };
 
 function getStock() {
