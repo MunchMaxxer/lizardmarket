@@ -21,7 +21,7 @@ const lizards = [
   {
     id: "bearded",
     name: "Bearded Dragon",
-    img: "anole2_large.jpg",
+    img: "bearded.png",
     prices: { hatchling: 45, baby: 75, juvenile: 125, adult: 235 }
   },
   {
