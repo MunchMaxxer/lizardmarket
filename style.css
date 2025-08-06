@@ -1,0 +1,95 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #e2f3da;
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  background: #7ea96b;
+  padding: 1em;
+  display: flex;
+  gap: 1em;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+main {
+  max-width: 700px;
+  margin: 2em auto;
+  background: #fff;
+  padding: 2em;
+  border-radius: 8px;
+}
+
+.shop-btn, .checkout-btn, .pay-btn {
+  background: #7ea96b;
+  color: #fff;
+  padding: 0.7em 1.5em;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1.1em;
+  display: inline-block;
+  margin-top: 2em;
+}
+
+.shop-btn:hover, .checkout-btn:hover, .pay-btn:hover {
+  background: #60804e;
+}
+
+.lizard-card {
+  border: 1px solid #7ea96b;
+  border-radius: 8px;
+  padding: 1em;
+  margin-bottom: 1em;
+  background: #f3fbe8;
+}
+
+.lizard-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 0.3em;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5em 0;
+}
+
+.admin-input {
+  width: 4em;
+}
+
+#cart-items {
+  margin-top: 1em;
+}
+
+.cart-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.cart-qty {
+  width: 3em;
+}
+
+.remove-cart-btn {
+  background: #e57373;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 0.3em 0.8em;
+  cursor: pointer;
+}
+
+.remove-cart-btn:hover {
+  background: #c62828;
+}
