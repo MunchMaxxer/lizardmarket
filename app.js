@@ -3,16 +3,19 @@ const lizards = [
   {
     id: "anole",
     name: "Anole",
+    img: "images/anole.png",
     prices: { hatchling: 15, baby: 20, juvenile: 28, adult: 40 }
   },
   {
     id: "texas_spiny",
     name: "Texas Spiny Lizard",
+    img: "images/texas-spiny.png",
     prices: { hatchling: 22, baby: 30, juvenile: 37, adult: 50 }
   },
   {
     id: "racerunner",
     name: "Six Lined Racerunner",
+    img: "images/racerunner.png",
     prices: { hatchling: 18, baby: 25, juvenile: 32, adult: 45 }
   }
 ];
@@ -41,15 +44,18 @@ function renderShop() {
   lizards.forEach(lizard => {
     const card = document.createElement("div");
     card.className = "lizard-card";
-    card.innerHTML = `<div class="lizard-title">${lizard.name}</div>`;
+    card.innerHTML = `
+      <div class="lizard-title">${lizard.name}</div>
+      <img class="lizard-img" src="${lizard.img}" alt="${lizard.name}" />
+    `;
     Object.keys(lizard.prices).forEach(age => {
       const price = lizard.prices[age];
       const qty = stock[lizard.id][age];
       card.innerHTML += `
         <div class="price-row">
-          <span>${age.charAt(0).toUpperCase() + age.slice(1)} - $${price} (${qty} in stock)</span>
+          <span>${age.charAt(0).toUpperCase() + age.slice(1)} - <b>$${price}</b> (${qty} in stock)</span>
           <input type="number" min="1" max="${qty}" value="1" id="${lizard.id}-${age}-qty">
-          <button onclick="addToCart('${lizard.id}','${age}')">Add to Cart</button>
+          <button onclick="addToCart('${lizard.id}','${age}')" class="pulse">Add to Cart</button>
         </div>
       `;
     });
@@ -73,23 +79,67 @@ function addToCart(lizardId, age) {
   if (qty < 1) return;
   const stock = getStock();
   if (qty > stock[lizardId][age]) {
+    animateError(qtyInput);
     alert("Not enough stock!");
     return;
   }
   const cart = getCart();
   const itemIndex = cart.findIndex(item => item.lizardId === lizardId && item.age === age);
   if (itemIndex > -1) {
-    // Update existing item
     if (cart[itemIndex].qty + qty > stock[lizardId][age]) {
+      animateError(qtyInput);
       alert("Not enough stock!");
       return;
     }
     cart[itemIndex].qty += qty;
+    animateSuccess(qtyInput);
   } else {
     cart.push({ lizardId, age, qty });
+    animateSuccess(qtyInput);
   }
   setCart(cart);
-  alert("Added to cart!");
+  animateCart();
+  showToast("Added to cart!");
+}
+
+function animateError(el) {
+  el.classList.add("shake");
+  setTimeout(() => el.classList.remove("shake"), 400);
+}
+
+function animateSuccess(el) {
+  el.style.boxShadow = "0 0 10px #6dd47e";
+  setTimeout(() => el.style.boxShadow = "", 500);
+}
+
+function animateCart() {
+  const cartLink = document.querySelector('nav a[href="cart.html"]');
+  if (cartLink) {
+    cartLink.classList.add("pulse");
+    setTimeout(() => cartLink.classList.remove("pulse"), 700);
+  }
+}
+
+function showToast(msg) {
+  let toast = document.createElement("div");
+  toast.innerText = msg;
+  toast.style.position = "fixed";
+  toast.style.bottom = "40px";
+  toast.style.right = "40px";
+  toast.style.background = "#6dd47e";
+  toast.style.color = "#fff";
+  toast.style.fontWeight = "bold";
+  toast.style.padding = "1em 2em";
+  toast.style.borderRadius = "15px";
+  toast.style.boxShadow = "0 2px 18px #6dd47e99";
+  toast.style.zIndex = "9999";
+  toast.style.fontSize = "1.1em";
+  toast.style.opacity = "0";
+  toast.style.transition = "opacity 0.4s";
+  document.body.appendChild(toast);
+  setTimeout(() => toast.style.opacity = "1", 100);
+  setTimeout(() => toast.style.opacity = "0", 1800);
+  setTimeout(() => toast.remove(), 2200);
 }
 
 // Render cart page
@@ -110,7 +160,9 @@ function renderCart() {
     const row = document.createElement("div");
     row.className = "cart-row";
     row.innerHTML = `
-      <span>${lizard.name} (${item.age}) - $${price} x 
+      <span>
+        <img src="${lizard.img}" alt="${lizard.name}" style="width:48px;vertical-align:middle;border-radius:8px;margin-right:12px;">
+        ${lizard.name} (${item.age}) - $${price} x 
         <input type="number" min="1" max="${stockQty}" value="${item.qty}" class="cart-qty" id="cart-qty-${idx}">
       </span>
       <span>Total: $${price * item.qty}</span>
@@ -118,7 +170,6 @@ function renderCart() {
     `;
     cartDiv.appendChild(row);
 
-    // Update qty event
     setTimeout(() => {
       const qtyInput = document.getElementById(`cart-qty-${idx}`);
       if (qtyInput) {
@@ -129,6 +180,7 @@ function renderCart() {
           cart[idx].qty = newQty;
           setCart(cart);
           renderCart();
+          animateSuccess(qtyInput);
         };
       }
     }, 0);
@@ -141,6 +193,8 @@ function removeCartItem(idx) {
   cart.splice(idx, 1);
   setCart(cart);
   renderCart();
+  animateCart();
+  showToast("Removed from cart.");
 }
 
 // Render checkout summary
@@ -185,6 +239,8 @@ function setupAdminPage() {
       renderStockManagement();
     } else {
       loginError.style.display = "block";
+      loginError.classList.add("shake");
+      setTimeout(() => loginError.classList.remove("shake"), 400);
     }
   };
 }
@@ -196,7 +252,10 @@ function renderStockManagement() {
   lizards.forEach(lizard => {
     const card = document.createElement("div");
     card.className = "lizard-card";
-    card.innerHTML = `<div class="lizard-title">${lizard.name}</div>`;
+    card.innerHTML = `
+      <div class="lizard-title">${lizard.name}</div>
+      <img class="lizard-img" src="${lizard.img}" alt="${lizard.name}" />
+    `;
     Object.keys(lizard.prices).forEach(age => {
       card.innerHTML += `
         <div class="price-row">
@@ -210,6 +269,7 @@ function renderStockManagement() {
   // Save button
   const saveBtn = document.createElement("button");
   saveBtn.innerText = "Save Stock";
+  saveBtn.className = "pulse";
   saveBtn.onclick = () => {
     lizards.forEach(lizard => {
       Object.keys(lizard.prices).forEach(age => {
