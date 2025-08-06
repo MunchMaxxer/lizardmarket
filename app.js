@@ -21,25 +21,25 @@ const lizards = [
   {
     id: "bearded",
     name: "Bearded Dragon",
-    img: "bearded.png",
+    img: "bearded.jpg",
     prices: { hatchling: 45, baby: 75, juvenile: 125, adult: 235 }
   },
   {
     id: "leopard",
     name: "Leopard Gecko",
-    img: "leopard.png",
+    img: "leopard.jpg",
     prices: { hatchling: 12, baby: 35, juvenile: 50, adult: 85 }
   },
   {
     id: "crested",
     name: "Crested Gecko",
-    img: "crested.png",
+    img: "crested.jpg",
     prices: { hatchling: 45, baby: 105, juvenile: 195, adult: 250 }
   },
   {
     id: "house",
     name: "House Gecko",
-    img: "house.png",
+    img: "house.jpg",
     prices: { hatchling: 5, baby: 12, juvenile: 16, adult: 23 }
   },
   
