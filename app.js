@@ -3,19 +3,19 @@ const lizards = [
   {
     id: "anole",
     name: "Anole",
-    img: "images/anole.png",
+    img: "https://en.wikipedia.org/wiki/File:Anole.jpg",
     prices: { hatchling: 15, baby: 20, juvenile: 28, adult: 40 }
   },
   {
     id: "texas_spiny",
     name: "Texas Spiny Lizard",
-    img: "images/texas-spiny.png",
+    img: "https://en.wikipedia.org/wiki/File:Texas_Spiny_Lizard_(Sceloporus_olivaceus)_(31037017).jpg",
     prices: { hatchling: 22, baby: 30, juvenile: 37, adult: 50 }
   },
   {
     id: "racerunner",
     name: "Six Lined Racerunner",
-    img: "images/racerunner.png",
+    img: "https://en.wikipedia.org/wiki/File:Six-lined_racerunner_(Aspidoscelis_sexlineatus)_Madden_Haag.jpg",
     prices: { hatchling: 18, baby: 25, juvenile: 32, adult: 45 }
   }
 ];
