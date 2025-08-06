@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <title>Lizard Market - Admin</title>
   <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
 </head>
-<body>
+<body class="fade-in">
   <nav>
     <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
@@ -13,22 +14,21 @@
     <a href="admin.html">Admin</a>
   </nav>
   <main>
-    <h1>Admin Control Panel</h1>
-    <div id="admin-login">
+    <h1 class="slide-down">Admin <span class="gradient-text">Control Panel</span></h1>
+    <div id="admin-login" class="admin-card">
       <h2>Login</h2>
       <form id="adminLoginForm">
         <label>Username: <input type="text" id="admin-username" required></label><br>
         <label>Password: <input type="password" id="admin-password" required></label><br>
-        <button type="submit">Login</button>
+        <button type="submit" class="pulse">Login</button>
       </form>
-      <div id="login-error" style="color:red;display:none;">Incorrect username or password.</div>
+      <div id="login-error" class="shake" style="color:red;display:none;">Incorrect username or password.</div>
     </div>
     <div id="admin-panel" style="display:none;">
       <h2>Stock Management</h2>
       <div id="stock-management"></div>
-      <button onclick="logoutAdmin()">Logout</button>
+      <button onclick="logoutAdmin()" class="pulse">Logout</button>
     </div>
-    <script src="app.js"></script>
   </main>
 </body>
 </html>
