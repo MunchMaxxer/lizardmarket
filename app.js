@@ -20,7 +20,6 @@ const lizards = [
   }
 ];
 
-// Default stock (can be set by admin)
 const defaultStock = {
   anole: { hatchling: 10, baby: 6, juvenile: 4, adult: 2 },
   texas_spiny: { hatchling: 8, baby: 5, juvenile: 3, adult: 1 },
@@ -36,12 +35,14 @@ function setStock(stock) {
 }
 
 // Render lizard listings on shop page
-function renderShop() {
+function renderShop(filtered = lizards) {
   const stock = getStock();
   const listings = document.getElementById("lizard-listings");
   if (!listings) return;
+
   listings.innerHTML = "";
-  lizards.forEach(lizard => {
+
+  filtered.forEach(lizard => {
     const card = document.createElement("div");
     card.className = "lizard-card";
     card.innerHTML = `
@@ -60,6 +61,28 @@ function renderShop() {
       `;
     });
     listings.appendChild(card);
+  });
+}
+
+// Inject search bar into shop page
+function injectSearchBar() {
+  const listingsContainer = document.getElementById("lizard-listings");
+  if (!listingsContainer) return;
+
+  const searchInput = document.createElement("input");
+  searchInput.setAttribute("type", "text");
+  searchInput.setAttribute("placeholder", "Search lizards by name or age...");
+  searchInput.className = "search-bar";
+  listingsContainer.parentNode.insertBefore(searchInput, listingsContainer);
+
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+    const filtered = lizards.filter(lizard => {
+      const nameMatch = lizard.name.toLowerCase().includes(query);
+      const ageMatch = Object.keys(lizard.prices).some(age => age.includes(query));
+      return nameMatch || ageMatch;
+    });
+    renderShop(filtered);
   });
 }
 
@@ -266,7 +289,6 @@ function renderStockManagement() {
     });
     stockDiv.appendChild(card);
   });
-  // Save button
   const saveBtn = document.createElement("button");
   saveBtn.innerText = "Save Stock";
   saveBtn.className = "pulse";
@@ -289,9 +311,10 @@ function logoutAdmin() {
   document.getElementById("admin-login").style.display = "block";
 }
 
-// Page-specific rendering
+// Init page-specific rendering
 document.addEventListener("DOMContentLoaded", function() {
   renderShop();
+  injectSearchBar(); // Add search bar on shop load
   renderCart();
   renderCheckout();
   setupAdminPage();
