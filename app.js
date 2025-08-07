@@ -1,45 +1,45 @@
-// Data for lizards and stock
+// Data for lizards with full info (prices etc)
 const lizards = [
   {
     id: "anole",
     name: "Anole",
-    img: "anole2_large.jpg",
+    img: "images/anole2_large.jpg",
     prices: { hatchling: 15, baby: 20, juvenile: 28, adult: 40 }
   },
   {
     id: "texas_spiny",
     name: "Texas Spiny Lizard",
-    img: "Texas_Spiny_Lizard_(Sceloporus_olivaceus)_(31037017).jpg",
+    img: "images/Texas_Spiny_Lizard_(Sceloporus_olivaceus)_(31037017).jpg",
     prices: { hatchling: 22, baby: 30, juvenile: 37, adult: 50 }
   },
   {
     id: "racerunner",
     name: "Six Lined Racerunner",
-    img: "images (23).jpeg",
+    img: "images/images (23).jpeg",
     prices: { hatchling: 18, baby: 25, juvenile: 32, adult: 45 }
   },
   {
     id: "bearded",
     name: "Bearded Dragon",
-    img: "bearded.jpg",
+    img: "images/bearded.jpg",
     prices: { hatchling: 45, baby: 75, juvenile: 125, adult: 235 }
   },
   {
     id: "leopard",
     name: "Leopard Gecko",
-    img: "leopard.jpg",
+    img: "images/leopard.jpg",
     prices: { hatchling: 12, baby: 35, juvenile: 50, adult: 85 }
   },
   {
     id: "crested",
     name: "Crested Gecko",
-    img: "crested.jpg",
+    img: "images/crested.jpg",
     prices: { hatchling: 45, baby: 105, juvenile: 195, adult: 250 }
   },
   {
     id: "house",
     name: "House Gecko",
-    img: "house.jpg",
+    img: "images/house.jpg",
     prices: { hatchling: 5, baby: 12, juvenile: 16, adult: 23 }
   },
 ];
@@ -62,82 +62,63 @@ function setStock(stock) {
   localStorage.setItem("lizardStock", JSON.stringify(stock));
 }
 
-// ⬇️ Simplified shop UI: Only image + name, with expandable info on click
-function renderShop(filtered = lizards) {
+function getCart() {
+  return JSON.parse(localStorage.getItem("lizardCart")) || [];
+}
+
+function setCart(cart) {
+  localStorage.setItem("lizardCart", JSON.stringify(cart));
+}
+
+// This function is to be called from lizard detail pages' Add to Cart button
+// Example usage in detail page: addToCart('anole', 'juvenile', 1);
+function addToCart(lizardId, age, qty = 1) {
   const stock = getStock();
-  const listings = document.getElementById("lizard-listings");
-  if (!listings) return;
-
-  listings.innerHTML = "";
-
-  filtered.forEach(lizard => {
-    const card = document.createElement("div");
-    card.className = "lizard-card";
-    card.innerHTML = `
-      <img class="lizard-img clickable" src="${lizard.img}" alt="${lizard.name}" />
-      <div class="lizard-title">${lizard.name}</div>
-      <div class="lizard-info" style="display:none;"></div>
-    `;
-
-    const infoDiv = card.querySelector(".lizard-info");
-
-    // Add detailed info to hidden div
-    let infoHtml = "<ul>";
-    Object.keys(lizard.prices).forEach(age => {
-      const price = lizard.prices[age];
-      const qty = stock[lizard.id][age];
-      infoHtml += `<li>${age.charAt(0).toUpperCase() + age.slice(1)} - $${price} (${qty} in stock)</li>`;
-    });
-    infoHtml += "</ul>";
-    infoDiv.innerHTML = infoHtml;
-
-    // Toggle info on click
-    card.querySelector("img").addEventListener("click", () => {
-      infoDiv.style.display = infoDiv.style.display === "none" ? "block" : "none";
-    });
-
-    listings.appendChild(card);
-  });
+  if (!stock[lizardId] || stock[lizardId][age] === undefined) {
+    alert("Invalid lizard or age category.");
+    return;
+  }
+  if (qty < 1) {
+    alert("Quantity must be at least 1.");
+    return;
+  }
+  if (qty > stock[lizardId][age]) {
+    alert("Not enough stock!");
+    return;
+  }
+  const cart = getCart();
+  const itemIndex = cart.findIndex(item => item.lizardId === lizardId && item.age === age);
+  if (itemIndex > -1) {
+    if (cart[itemIndex].qty + qty > stock[lizardId][age]) {
+      alert("Not enough stock!");
+      return;
+    }
+    cart[itemIndex].qty += qty;
+  } else {
+    cart.push({ lizardId, age, qty });
+  }
+  setCart(cart);
+  alert("Added to cart!");
+  // Optionally update cart icon animation if exists on detail pages
 }
 
-// Optional: Inject search bar
-function injectSearchBar() {
-  const listingsContainer = document.getElementById("lizard-listings");
-  if (!listingsContainer) return;
+// The rest of your existing cart management, admin login, renderCart, renderCheckout, renderStockManagement, etc.
+// Keep all that intact since those pages still use it.
 
-  const searchInput = document.createElement("input");
-  searchInput.setAttribute("type", "text");
-  searchInput.setAttribute("placeholder", "Search lizards...");
-  searchInput.className = "search-bar";
-  listingsContainer.parentNode.insertBefore(searchInput, listingsContainer);
+// If you want, I can provide those again or you can keep them as is.
 
-  searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase();
-    const filtered = lizards.filter(lizard => lizard.name.toLowerCase().includes(query));
-    renderShop(filtered);
-  });
-}
+document.addEventListener("DOMContentLoaded", () => {
+  // No rendering shop page here anymore because shop.html is static with links only
 
-// -- Cart and admin functions remain unchanged -- //
-function renderCart() { /* unchanged */ }
-function addToCart() { /* unchanged */ }
-function setCart() { /* unchanged */ }
-function getCart() { /* unchanged */ }
-function removeCartItem() { /* unchanged */ }
-function renderCheckout() { /* unchanged */ }
-function setupAdminPage() { /* unchanged */ }
-function renderStockManagement() { /* unchanged */ }
-function logoutAdmin() { /* unchanged */ }
-function showToast() { /* unchanged */ }
-function animateSuccess() { /* unchanged */ }
-function animateError() { /* unchanged */ }
-function animateCart() { /* unchanged */ }
-
-// Initialize
-document.addEventListener("DOMContentLoaded", function() {
-  renderShop();
-  injectSearchBar();
-  renderCart();
-  renderCheckout();
-  setupAdminPage();
+  // You can still render cart and checkout on their respective pages if present:
+  if (document.getElementById("cart-items")) {
+    renderCart();
+  }
+  if (document.getElementById("checkout-summary")) {
+    renderCheckout();
+  }
+  // Setup admin login if admin page exists
+  if (document.getElementById("adminLoginForm")) {
+    setupAdminPage();
+  }
 });
