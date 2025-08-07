@@ -6,7 +6,7 @@
   <title>Lizard Details</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Override lizard-img styling to prevent scaling */
+    /* Prevent scaling on image hover */
     .lizard-img {
       width: 100%;
       max-width: 400px;
@@ -15,38 +15,40 @@
       transition: none !important;
       transform: none !important;
       display: block;
-      margin: 1em auto;
+      margin: 1.5em auto;
     }
 
     .lizard-details {
       max-width: 600px;
-      margin: 2em auto;
+      margin: 2em auto 4em;
       background: rgba(255, 255, 255, 0.95);
       padding: 2em;
       border-radius: 20px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #2d2d2d;
+      text-align: center;
     }
 
     .lizard-title {
-      font-size: 2em;
+      font-size: 2.2em;
       font-weight: 700;
       color: #3fcbaf;
-      margin-bottom: 0.5em;
-      text-align: center;
+      margin-bottom: 0.8em;
     }
 
     .price-row {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       margin: 0.8em 0;
       font-size: 1.1em;
+      gap: 1em;
     }
 
     .price-row label {
-      flex: 1;
+      flex: 1 0 120px;
+      text-align: right;
     }
 
     input[type="number"] {
@@ -57,7 +59,6 @@
       font-size: 1em;
       text-align: center;
       transition: border 0.2s ease;
-      margin-left: 1em;
     }
     input[type="number"]:focus {
       border-color: #6dd47e;
@@ -66,19 +67,18 @@
     }
 
     .add-cart-btn {
-      margin-top: 1.5em;
-      display: block;
-      width: 100%;
+      margin-top: 2em;
       background: linear-gradient(to right, #3fcbaf, #6dd47e);
       color: white;
-      font-size: 1.2em;
+      font-size: 1.3em;
       font-weight: 700;
       border: none;
       border-radius: 12px;
-      padding: 0.9em;
+      padding: 0.9em 2em;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(63, 203, 175, 0.4);
       transition: background 0.3s ease, transform 0.2s ease;
+      display: inline-block;
     }
     .add-cart-btn:hover {
       background: linear-gradient(to right, #ffe066, #3fcbaf);
@@ -87,30 +87,39 @@
 
     .back-link {
       display: block;
-      margin: 1em auto 2em;
-      text-align: center;
+      margin: 1.5em auto 0;
       font-weight: 600;
       color: #3fcbaf;
       text-decoration: none;
+      max-width: 600px;
+      text-align: center;
     }
     .back-link:hover {
       text-decoration: underline;
     }
 
-    /* Responsive */
     @media (max-width: 640px) {
       .lizard-details {
         margin: 1em;
         padding: 1.5em;
       }
+      .price-row {
+        flex-direction: column;
+        gap: 0.5em;
+      }
+      .price-row label {
+        text-align: center;
+        flex: unset;
+      }
     }
   </style>
 </head>
 <body>
-  <a href="shop.html" class="back-link">&larr; Back to Shop</a>
   <main class="lizard-details" id="lizard-details">
-    <!-- Filled by JS -->
+    <!-- Content loaded by JS -->
   </main>
+
+  <a href="shop.html" class="back-link">&larr; Back to Shop</a>
 
   <script src="app.js"></script>
   <script>
@@ -141,7 +150,7 @@
         html += `
           <div class="price-row">
             <label for="qty-${age}">${capitalize(age)} ($${price}):</label>
-            <input type="number" id="qty-${age}" min="0" max="${qty}" value="1" />
+            <input type="number" id="qty-${age}" min="0" max="${qty}" value="0" />
             <span>(${qty} in stock)</span>
           </div>
         `;
@@ -154,7 +163,6 @@
 
       container.innerHTML = html;
 
-      // Add event listener for Add to Cart button
       document.getElementById('add-cart-btn').onclick = () => {
         let addedAny = false;
         Object.keys(lizard.prices).forEach(age => {
@@ -167,18 +175,17 @@
         });
         if (!addedAny) {
           alert('Please select quantity for at least one age category.');
+        } else {
+          alert('Added to cart!');
         }
       };
     }
 
-    // On page load, get lizard ID from URL hash or query string
     document.addEventListener('DOMContentLoaded', () => {
-      // Example URL: lizard.html#anole
       const hash = window.location.hash.substr(1);
       if (hash) {
         renderLizardDetail(hash);
       } else {
-        // fallback: maybe show first lizard or error
         document.getElementById('lizard-details').innerHTML = '<p>No lizard selected.</p>';
       }
     });
