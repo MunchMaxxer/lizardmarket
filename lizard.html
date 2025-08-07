@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lizard Details</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav>
+    <a href="shop.html">Back to Shop</a>
+  </nav>
+  <main id="lizard-details" style="max-width: 600px; margin: 2em auto; padding: 1em;">
+    <!-- Lizard details will be loaded here -->
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const lizardId = urlParams.get('id');
+    const detailsDiv = document.getElementById('lizard-details');
+
+    if (!lizardId) {
+      detailsDiv.innerHTML = '<p>No lizard specified.</p>';
+    } else {
+      const lizard = lizards.find(l => l.id === lizardId);
+      if (!lizard) {
+        detailsDiv.innerHTML = '<p>Lizard not found.</p>';
+      } else {
+        const stock = getStock();
+
+        detailsDiv.innerHTML = `
+          <h1 class="gradient-text">${lizard.name}</h1>
+          <img src="${lizard.img}" alt="${lizard.name}" class="lizard-img" style="max-width:100%; max-height: 300px; margin-bottom: 1em;" />
+          <p><strong>Available Ages & Prices:</strong></p>
+          <div id="prices-container"></div>
+        `;
+
+        const pricesContainer = document.getElementById('prices-container');
+
+        Object.keys(lizard.prices).forEach(age => {
+          const price = lizard.prices[age];
+          const qty = stock[lizard.id][age];
+
+          const priceRow = document.createElement('div');
+          priceRow.className = 'price-row';
+          priceRow.style.marginBottom = '0.7em';
+          priceRow.innerHTML = `
+            <span>${age.charAt(0).toUpperCase() + age.slice(1)} - <b>$${price}</b> (${qty} in stock)</span>
+            <input type="number" min="1" max="${qty}" value="1" id="qty-${age}" style="width: 3em; margin-left: 0.5em;" />
+            <button onclick="addToCart('${lizard.id}', '${age}')" class="pulse" style="margin-left: 0.5em;">Add to Cart</button>
+          `;
+
+          pricesContainer.appendChild(priceRow);
+        });
+      }
+    }
+  </script>
+</body>
+</html>
