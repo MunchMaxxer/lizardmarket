@@ -2,43 +2,117 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lizard Shop</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Our Lizards</h1>
-  <div id="lizard-listings" class="listings-grid"></div>
+  <nav>
+    <a href="shop.html">Shop</a>
+    <a href="cart.html">Cart</a>
+    <a href="checkout.html">Checkout</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+
+  <main>
+    <h1 class="gradient-text">Lizard Shop</h1>
+
+    <label for="search" style="font-weight: 600;">Search Lizards:</label>
+    <input
+      type="text"
+      id="search"
+      placeholder="Type to search..."
+      style="margin-bottom: 1.5em; padding: 0.6em 1em; font-size: 1em; border-radius: 8px; border: 1px solid #c8e6c9;"
+    />
+
+    <div class="listings-grid" id="lizard-list">
+      <!-- Lizard cards inserted by JS -->
+    </div>
+  </main>
 
   <script>
-    // Data for lizards (same as before)
     const lizards = [
-      { id: "anole", name: "Anole", img: "images/anole2_large.jpg" },
-      { id: "texas_spiny", name: "Texas Spiny Lizard", img: "images/Texas_Spiny_Lizard_(Sceloporus_olivaceus)_(31037017).jpg" },
-      { id: "racerunner", name: "Six Lined Racerunner", img: "images/images (23).jpeg" },
-      { id: "bearded", name: "Bearded Dragon", img: "images/bearded.jpg" },
-      { id: "leopard", name: "Leopard Gecko", img: "images/leopard.jpg" },
-      { id: "crested", name: "Crested Gecko", img: "images/crested.jpg" },
-      { id: "house", name: "House Gecko", img: "images/house.jpg" }
+      {
+        id: "anole",
+        name: "Anole",
+        img: "anole2_large.jpg",
+        prices: { hatchling: 15, baby: 20, juvenile: 28, adult: 40 }
+      },
+      {
+        id: "texas_spiny",
+        name: "Texas Spiny Lizard",
+        img: "Texas_Spiny_Lizard_(Sceloporus_olivaceus)_(31037017).jpg",
+        prices: { hatchling: 22, baby: 30, juvenile: 37, adult: 50 }
+      },
+      {
+        id: "racerunner",
+        name: "images (23).jpeg",
+        img: "images (23).jpeg",
+        prices: { hatchling: 18, baby: 25, juvenile: 32, adult: 45 }
+      },
+      {
+        id: "bearded",
+        name: "Bearded Dragon",
+        img: "bearded.jpg",
+        prices: { hatchling: 45, baby: 75, juvenile: 125, adult: 235 }
+      },
+      {
+        id: "leopard",
+        name: "Leopard Gecko",
+        img: "leopard.jpg",
+        prices: { hatchling: 12, baby: 35, juvenile: 50, adult: 85 }
+      },
+      {
+        id: "crested",
+        name: "Crested Gecko",
+        img: "crested.jpg",
+        prices: { hatchling: 45, baby: 105, juvenile: 195, adult: 250 }
+      },
+      {
+        id: "house",
+        name: "House Gecko",
+        img: "house.jpg",
+        prices: { hatchling: 5, baby: 12, juvenile: 16, adult: 23 }
+      },
     ];
 
-    // Render lizard cards with only image and name linking to their pages
-    function renderShop() {
-      const listings = document.getElementById("lizard-listings");
-      listings.innerHTML = "";
+    const lizardList = document.getElementById("lizard-list");
+    const searchInput = document.getElementById("search");
 
-      lizards.forEach(lizard => {
+    function renderLizards(filter = "") {
+      const filtered = lizards.filter(l =>
+        l.name.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      lizardList.innerHTML = "";
+
+      if (filtered.length === 0) {
+        lizardList.innerHTML = "<p>No lizards found.</p>";
+        return;
+      }
+
+      filtered.forEach(lizard => {
         const card = document.createElement("a");
+        card.href = `lizard.html?id=${encodeURIComponent(lizard.id)}`;
         card.className = "lizard-card";
-        card.href = `lizards/${lizard.id}.html`; // link to separate detail page
+        card.style.textDecoration = "none";
+        card.style.color = "inherit";
+
         card.innerHTML = `
-          <img src="${lizard.img}" alt="${lizard.name}" />
           <div class="lizard-title">${lizard.name}</div>
+          <img class="lizard-img" src="${lizard.img}" alt="${lizard.name}" />
+          <div style="margin-top: 0.4em; font-weight: 600; color: #3fcbaf;">From $${Math.min(...Object.values(lizard.prices))}</div>
         `;
-        listings.appendChild(card);
+
+        lizardList.appendChild(card);
       });
     }
 
-    document.addEventListener("DOMContentLoaded", renderShop);
+    searchInput.addEventListener("input", e => {
+      renderLizards(e.target.value);
+    });
+
+    renderLizards();
   </script>
 </body>
 </html>
