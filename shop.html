@@ -1,23 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Lizard Market - Shop</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="app.js"></script>
+  <meta charset="UTF-8" />
+  <title>Lizard Shop</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="fade-in">
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="shop.html">Shop</a>
-    <a href="cart.html">Cart</a>
-    <a href="admin.html">Admin</a>
-    <input type="text" id="search-input" placeholder="Search lizards..." />
-  </nav>
+<body>
+  <h1>Our Lizards</h1>
+  <div id="lizard-listings" class="listings-grid"></div>
 
-  <main>
-    <h1 class="slide-down">Shop <span class="gradient-text">Lizards</span></h1>
-    <div id="lizard-listings" class="listings-grid"></div>
-  </main>
+  <script>
+    // Data for lizards (same as before)
+    const lizards = [
+      { id: "anole", name: "Anole", img: "images/anole2_large.jpg" },
+      { id: "texas_spiny", name: "Texas Spiny Lizard", img: "images/Texas_Spiny_Lizard_(Sceloporus_olivaceus)_(31037017).jpg" },
+      { id: "racerunner", name: "Six Lined Racerunner", img: "images/images (23).jpeg" },
+      { id: "bearded", name: "Bearded Dragon", img: "images/bearded.jpg" },
+      { id: "leopard", name: "Leopard Gecko", img: "images/leopard.jpg" },
+      { id: "crested", name: "Crested Gecko", img: "images/crested.jpg" },
+      { id: "house", name: "House Gecko", img: "images/house.jpg" }
+    ];
+
+    // Render lizard cards with only image and name linking to their pages
+    function renderShop() {
+      const listings = document.getElementById("lizard-listings");
+      listings.innerHTML = "";
+
+      lizards.forEach(lizard => {
+        const card = document.createElement("a");
+        card.className = "lizard-card";
+        card.href = `lizards/${lizard.id}.html`; // link to separate detail page
+        card.innerHTML = `
+          <img src="${lizard.img}" alt="${lizard.name}" />
+          <div class="lizard-title">${lizard.name}</div>
+        `;
+        listings.appendChild(card);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", renderShop);
+  </script>
 </body>
 </html>
