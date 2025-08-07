@@ -3,43 +3,43 @@ const lizards = [
   {
     id: "anole",
     name: "Anole",
-    img: "images/anole2_large.jpg",
+    img: "anole2_large.jpg",
     prices: { hatchling: 15, baby: 20, juvenile: 28, adult: 40 }
   },
   {
     id: "texas_spiny",
     name: "Texas Spiny Lizard",
-    img: "images/Texas_Spiny_Lizard_(Sceloporus_olivaceus)_(31037017).jpg",
+    img: "Texas_Spiny_Lizard_(Sceloporus_olivaceus)_(31037017).jpg",
     prices: { hatchling: 22, baby: 30, juvenile: 37, adult: 50 }
   },
   {
     id: "racerunner",
     name: "Six Lined Racerunner",
-    img: "images/images (23).jpeg",
+    img: "images (23).jpeg",
     prices: { hatchling: 18, baby: 25, juvenile: 32, adult: 45 }
   },
   {
     id: "bearded",
     name: "Bearded Dragon",
-    img: "images/bearded.jpg",
+    img: "bearded.jpg",
     prices: { hatchling: 45, baby: 75, juvenile: 125, adult: 235 }
   },
   {
     id: "leopard",
     name: "Leopard Gecko",
-    img: "images/leopard.jpg",
+    img: "leopard.jpg",
     prices: { hatchling: 12, baby: 35, juvenile: 50, adult: 85 }
   },
   {
     id: "crested",
     name: "Crested Gecko",
-    img: "images/crested.jpg",
+    img: "crested.jpg",
     prices: { hatchling: 45, baby: 105, juvenile: 195, adult: 250 }
   },
   {
     id: "house",
     name: "House Gecko",
-    img: "images/house.jpg",
+    img: "house.jpg",
     prices: { hatchling: 5, baby: 12, juvenile: 16, adult: 23 }
   },
 ];
